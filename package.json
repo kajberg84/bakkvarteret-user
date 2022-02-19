@@ -3,13 +3,16 @@
   "version": "0.0.1",
   "description": "In this assignment, you will implement a web API following the theory of REST. ",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon -r dotenv/config src/server.ts"
+    "start": "node dist/server.js",
+    "postinstall": "tsc",
+    "dev": "nodemon -r dotenv/config src/server.ts",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "repository": {
     "type": "git",
     "url": "git@gitlab.lnu.se:1dv027/student/kb223aw/api-design-assignment.git"
   },
+  "engines": { "node": "16" },
   "keywords": [],
   "author": "Kaj Berg",
   "license": "ISC",
