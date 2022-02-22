@@ -9,10 +9,12 @@ import express, { Router } from 'express'
 import createError from 'http-errors'
 import { userRouter } from './user-router'
 import { loginRouter } from './login-router'
+import { usersRouter } from './users-router'
 
 const router: Router = express.Router()
 
 router.use('/user', userRouter)
+router.use('/users', usersRouter)
 router.use('/login', loginRouter)
 
 

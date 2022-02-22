@@ -122,8 +122,9 @@ export class UserController {
       lastname: req.body.lastname,
       email: req.user.email
     }
+    const options = { new: true }
     try {
-      await UserModel.findByIdAndUpdate(filter, update)
+      await UserModel.findByIdAndUpdate(filter, update, options)
       res.status(204).send('User updated')
     } catch (error) {
       console.log('ERROR in update user')
