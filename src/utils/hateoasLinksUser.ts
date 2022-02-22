@@ -37,6 +37,10 @@ export default class HateoasLinks {
           href: `${this.baseUrl}/${route}/${user._id}/remove-friend`,
           rel: 'remove-friend',
           method: 'PATCH'
+        },
+        parent: {
+          href: `${this.baseUrl}/${route}`,
+          rel: 'up'
         }
       }
     }
@@ -68,6 +72,10 @@ export default class HateoasLinks {
             href: `${this.baseUrl}/${route}/${user._id}`,
             rel: 'self',
             method: 'DELETE'
+          },
+          parent: {
+            href: `${this.baseUrl}/${route}`,
+            rel: 'up'
           }
         }
       }
