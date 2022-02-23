@@ -69,10 +69,11 @@ export const hasPermission = (req: Request, res: Response, next: NextFunction, p
  */
 export const verifyRefreshToken = (email: string, token: string): any => {
   try {
+
     const publicKey = getKey('public-key.pem')
     const payload: any = jwt.verify(token, publicKey)
-    console.log('inne i verifyRefreshToken', payload)
-    if (payload.email === email) {
+
+    if (payload.email === email && payload) {
       return payload
     }
     return false
