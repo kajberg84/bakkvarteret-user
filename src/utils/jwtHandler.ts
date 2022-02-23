@@ -9,6 +9,11 @@ import dotenv from 'dotenv'
 import { getKey } from './keyHandler'
 dotenv.config()
 
+export const signJwt = (payload: any, options: any) => {
+  const privateKey = getKey('private-key.pem')
+  return jwt.sign(payload, privateKey, options)
+}
+
 /**
  * Authenticates requests.
  *
@@ -25,8 +30,10 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
   try {
     const publicKey = getKey('public-key.pem')
 
-    // Trying to verify the JWT
+    // Verify the JWT
     const payload: any = jwt.verify(authorization[1], publicKey)
+
+    // Add the user to the request
     req.user = {
       _id: payload._id,
       email: payload.email,
@@ -52,4 +59,25 @@ export const hasPermission = (req: Request, res: Response, next: NextFunction, p
   req.user.permissionLevel >= permissionLevel
     ? next()
     : next(createError(403, 'You are not authorized to access this resource'))
+}
+/**
+ * Verifying refreshToken
+ *
+ * @param {*} email
+ * @param {*} token
+ * @return {*} *
+ */
+export const verifyRefreshToken = (email: string, token: string): any => {
+  try {
+    const publicKey = getKey('public-key.pem')
+    const payload: any = jwt.verify(token, publicKey)
+    console.log('inne i verifyRefreshToken', payload)
+    if (payload.email === email) {
+      return payload
+    }
+    return false
+  } catch (error) {
+    console.error(error)
+    return false
+  }
 }

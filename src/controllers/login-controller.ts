@@ -14,6 +14,7 @@ import { checkUserPassword } from '../utils/passwordHandler'
 import { Request, Response, NextFunction } from 'express'
 import { getKey } from '../utils/keyHandler'
 import dotenv from 'dotenv'
+import { signJwt } from '../utils/jwtHandler'
 
 dotenv.config()
 
@@ -48,18 +49,16 @@ export class LoginController {
       }
       const accSignOptions: SignOptions = {
         algorithm: 'RS256',
-        expiresIn: '1000min'
+        expiresIn: '10min'
       }
 
       const refSignOptions: SignOptions = {
         algorithm: 'RS256',
-        expiresIn: '10min'
+        expiresIn: '1000min'
       }
 
-      let privateKey = await getKey('private-key.pem')
-
-      const accessToken = jwt.sign(payload, privateKey, accSignOptions)
-      const refreshToken = jwt.sign(payload, privateKey, refSignOptions)
+      const accessToken = signJwt(payload, accSignOptions)
+      const refreshToken = signJwt(payload, refSignOptions)
 
       res.status(200).json({
         access_token: accessToken,
@@ -67,7 +66,7 @@ export class LoginController {
       })
     } catch (error) {
       console.log('ERROR i login')
-      next(error)
+      next(createError(401, 'Invalid credentials'))
     }
   }
 }
